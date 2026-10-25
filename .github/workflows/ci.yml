@@ -36,7 +36,7 @@ jobs:
           # The site is served from https://<user>.github.io/<repo>/
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
       - if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: out
 
