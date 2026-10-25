@@ -1,14 +1,14 @@
 # dependencies and build output
 node_modules
 .next
+out
 *.tsbuildinfo
 next-env.d.ts
 
-# local data and secrets: never commit submissions or passcodes
+# local files from older versions and secrets
 data/
 .env
 .env*.local
-.vercel
 
 # personal documents and generated reports
 *.pdf

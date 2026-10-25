@@ -1,27 +1,16 @@
-import { notFound } from "next/navigation";
 import { Lightbulb, MessageCircle, Building2, Repeat, Route } from "lucide-react";
-import { getSubmission } from "@/lib/db";
 import { THINKING } from "@/lib/attributes";
 import { buildReport } from "@/lib/insights";
+import type { Profile } from "@/lib/share";
 import { ThinkingPie } from "@/components/ThinkingPie";
 import { PercentileBars } from "@/components/PercentileBars";
 import { BehaviorSpectrum } from "@/components/BehaviorSpectrum";
 import { ReportActions } from "@/components/ReportActions";
 
-export const dynamic = "force-dynamic";
-
-export default async function ReportPage({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams: { new?: string };
-}) {
-  const sub = await getSubmission(params.id);
-  if (!sub) notFound();
-  const s = sub.scores;
-  const r = buildReport(sub.name, s);
-  const date = new Date(sub.createdAt).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+/** The full personal report for a profile decoded from its link. */
+export function ReportView({ profile, code }: { profile: Profile; code: string }) {
+  const s = profile.scores;
+  const r = buildReport(profile.name, s);
 
   const tipRows: Array<[string, string]> = [
     ["What are they thinking?", r.tips.thinking],
@@ -36,22 +25,21 @@ export default async function ReportPage({
 
   return (
     <article className="space-y-6">
-      {searchParams.new && (
-        <div className="no-print rounded-xl border border-structural/30 bg-structural/5 p-3 text-sm">
-          Your profile is ready. Bookmark this page or copy the link: it&rsquo;s the only way back to your report.
-        </div>
-      )}
+      <div className="no-print rounded-xl border border-structural/30 bg-structural/5 p-3 text-sm">
+        Nothing about this report is saved anywhere. Its link is the only copy, so bookmark it or use{" "}
+        <b>Copy link</b> to keep it.
+      </div>
 
       <header className="space-y-4">
         <div>
-          <p className="eyebrow">Personal profile &middot; {date}</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight">{sub.name}</h1>
+          <p className="eyebrow">Personal profile</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight">{profile.name}</h1>
           <p className="mt-1 text-lg text-ink-soft">
             {r.title} &middot; <span className="text-ink-muted">{s.modality}</span>
           </p>
         </div>
         <p className="max-w-3xl text-ink-soft">{r.headline}</p>
-        <ReportActions id={sub.id} />
+        <ReportActions code={code} />
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">

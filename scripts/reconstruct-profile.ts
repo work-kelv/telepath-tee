@@ -1,5 +1,5 @@
 // Reconstructs plausible answers for a profile that only exists as published scores
-// (e.g. an older official Emergenetics report), using a current submission as the baseline.
+// (e.g. an older official Emergenetics report), using someone's current report link as the baseline.
 //
 // Method: for each attribute, invert the scoring (percentile -> z -> target raw mean), then
 // change the baseline answers by the fewest one-point steps needed to hit that mean,
@@ -7,15 +7,17 @@
 // closest to how you answer today that would produce the old profile", not a record of
 // what was actually answered.
 //
-// Usage: npm run reconstruct -- <baseline-submission-id> <old-profile.json> <out-dir> [--save]
+// Usage: npm run reconstruct -- "<current report link>" <old-profile.json> <out-dir> [--base-url=https://...]
 // The old-profile file holds the published percentiles; see scripts/old-profile.example.json.
+// Writes a JSON and a CSV of then-vs-now answers, and prints a report link for the
+// reconstructed profile (nothing is stored anywhere).
 
 import { promises as fs } from "fs";
 import path from "path";
 import { ATTRIBUTE_KEYS, type AttributeKey } from "../src/lib/attributes";
 import { QUESTIONS } from "../src/lib/questions";
 import { LIKERT_MAX, LIKERT_MIN, NORMS, normalCdf, score, type Answers } from "../src/lib/scoring";
-import { createSubmission, getSubmission } from "../src/lib/db";
+import { codeFromLink, decodeProfile, encodeProfile } from "../src/lib/share";
 
 interface OldProfile {
   label: string;
@@ -82,11 +84,14 @@ export function reconstruct(baseline: Answers, targets: Record<AttributeKey, num
 }
 
 async function main() {
-  const [baselineId, oldFile, outDir] = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-  if (!baselineId || !oldFile || !outDir) throw new Error("Usage: reconstruct <baseline-submission-id> <old-profile.json> <out-dir> [--save]");
+  const args = process.argv.slice(2);
+  const [link, oldFile, outDir] = args.filter((a) => !a.startsWith("--"));
+  if (!link || !oldFile || !outDir) throw new Error('Usage: reconstruct "<current report link>" <old-profile.json> <out-dir> [--base-url=...]');
+  const baseUrl = (args.find((a) => a.startsWith("--base-url="))?.split("=")[1] ?? "http://localhost:3000").replace(/\/$/, "");
   const oldProfile = await readOldProfile(oldFile);
-  const current = await getSubmission(baselineId);
-  if (!current) throw new Error(`No submission ${baselineId}`);
+  const code = codeFromLink(link);
+  const current = code ? decodeProfile(code) : null;
+  if (!code || !current) throw new Error("That isn't a complete report link.");
 
   const { answers, targetRaw } = reconstruct(current.answers, oldProfile.percentiles);
   const oldScores = score(answers);
@@ -106,7 +111,7 @@ async function main() {
     person: current.name,
     method:
       "Old answers are reconstructed: the closest answers to the current ones that reproduce the old profile's percentiles under this app's scoring. They are not the original responses.",
-    current: { source: `App submission ${current.id} (${current.createdAt})`, scores: current.scores, answers: current.answers },
+    current: { source: "Report link", scores: current.scores, answers: current.answers },
     old: {
       source: oldProfile.label,
       officialPercentiles: oldProfile.percentiles,
@@ -128,17 +133,8 @@ async function main() {
   ].join("\n");
   await fs.writeFile(path.join(outDir, "answers-current-vs-old.csv"), csv);
 
-  if (process.argv.includes("--save")) {
-    const saved = await createSubmission({
-      name: `${current.name} (old profile, reconstructed)`,
-      email: current.email,
-      group: current.group || "Profile history",
-      answers,
-      scores: oldScores,
-    });
-    console.log(`Saved reconstructed old profile to app: /report/${saved.id}`);
-    console.log(`Compare in app: /compare?ids=${current.id},${saved.id}`);
-  }
+  const oldCode = encodeProfile(`${current.name} (earlier, reconstructed)`, answers);
+  console.log(`Reconstructed report: ${baseUrl}/report/#${oldCode}`);
 
   console.log("attribute       official  reconstructed  current");
   for (const k of ATTRIBUTE_KEYS)

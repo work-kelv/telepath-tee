@@ -14,7 +14,7 @@ export function ThinkingMixBar({
   const label = (k: ThinkingKey) => {
     const p = percentages[k];
     if (compact) return p >= 12 ? `${p}%` : "";
-    return p >= 12 ? `${THINKING[k].short} ${p}%` : p >= 6 ? `${p}` : "";
+    return p >= 24 ? `${THINKING[k].short} ${p}%` : p >= 9 ? `${p}%` : "";
   };
   return (
     <div className="flex w-full gap-[2px] overflow-hidden rounded-lg" style={{ height }}>

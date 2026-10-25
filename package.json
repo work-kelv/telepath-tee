@@ -2,16 +2,15 @@
   "name": "telepath-tee",
   "version": "1.0.0",
   "private": true,
-  "description": "An Emergenetics-inspired thinking & behavior profile app for friends: questionnaire, instant visual report, team comparison.",
+  "description": "An Emergenetics-inspired thinking & behavior profile app: questionnaire, instant visual report, team comparison. Nothing is stored.",
   "scripts": {
     "setup": "npm install --no-bin-links",
     "dev": "node node_modules/next/dist/bin/next dev -H 0.0.0.0 -p 3000",
     "build": "node node_modules/next/dist/bin/next build",
-    "start": "node node_modules/next/dist/bin/next start -H 0.0.0.0 -p 3000",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test": "node node_modules/tsx/dist/cli.mjs --test src/lib/scoring.test.ts src/lib/team.test.ts src/lib/db.test.ts",
-    "seed": "node node_modules/tsx/dist/cli.mjs scripts/seed.ts",
-    "reconstruct": "node node_modules/tsx/dist/cli.mjs scripts/reconstruct-profile.ts"
+    "test": "node node_modules/tsx/dist/cli.mjs --test src/lib/scoring.test.ts src/lib/share.test.ts",
+    "reconstruct": "node node_modules/tsx/dist/cli.mjs scripts/reconstruct-profile.ts",
+    "preview": "node scripts/preview.mjs"
   },
   "dependencies": {
     "html-to-image": "1.11.11",

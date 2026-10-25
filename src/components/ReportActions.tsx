@@ -1,18 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Check, IdCard, Link2, Printer } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, IdCard, Link2, Printer, Share2 } from "lucide-react";
 
-export function ReportActions({ id }: { id: string }) {
+export function ReportActions({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
+  const [canShare, setCanShare] = useState(false);
+
+  useEffect(() => setCanShare(typeof navigator !== "undefined" && typeof navigator.share === "function"), []);
+
+  const link = () => `${window.location.origin}${window.location.pathname}#${code}`;
+
+  async function share() {
+    try {
+      await navigator.share({ title: "My thinking & behavior profile", url: link() });
+    } catch {
+      /* the person closed the share sheet */
+    }
+  }
 
   async function copyLink() {
-    const url = `${window.location.origin}/report/${id}`;
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(link());
     } catch {
-      window.prompt("Copy this link:", url);
+      window.prompt("Copy this link:", link());
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -20,15 +32,21 @@ export function ReportActions({ id }: { id: string }) {
 
   return (
     <div className="no-print flex flex-wrap gap-2">
-      <button className="btn-primary" onClick={() => window.print()}>
-        <Printer className="h-4 w-4" /> Print / Save PDF
-      </button>
-      <Link className="btn-ghost" href={`/card/${id}`}>
+      {canShare ? (
+        <button className="btn-primary" onClick={share}>
+          <Share2 className="h-4 w-4" /> Share link
+        </button>
+      ) : (
+        <button className="btn-primary" onClick={copyLink}>
+          {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+          {copied ? "Copied" : "Copy link"}
+        </button>
+      )}
+      <Link className="btn-ghost" href={`/card/#${code}`}>
         <IdCard className="h-4 w-4" /> How to work with me
       </Link>
-      <button className="btn-ghost" onClick={copyLink}>
-        {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
-        {copied ? "Copied" : "Copy link"}
+      <button className="btn-ghost" onClick={() => window.print()}>
+        <Printer className="h-4 w-4" /> Save PDF
       </button>
     </div>
   );

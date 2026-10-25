@@ -1,12 +1,24 @@
-name: CI
+name: CI and deploy
 
+# Every push and pull request is tested and built. Pushes to main are also published
+# to GitHub Pages as a static site (nothing runs on a server and nothing is stored).
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -16,7 +28,25 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - run: npm run typecheck
+      - name: Build static site
+        run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-      - run: npm run typecheck
+          # The site is served from https://<user>.github.io/<repo>/
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -5,23 +5,25 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Loader2, Send } from "lucide-react";
 import { LikertScale } from "@/components/LikertScale";
 import { buildSteps, QUESTIONS } from "@/lib/questions";
+import { encodeProfile, MAX_NAME_LENGTH } from "@/lib/share";
 
 const STORAGE_KEY = "profile-assessment-draft-v1";
 
 interface Draft {
   name: string;
-  email: string;
-  group: string;
   answers: Record<string, number>;
   step: number;
 }
 
-const EMPTY: Draft = { name: "", email: "", group: "", answers: {}, step: 0 };
+const EMPTY: Draft = { name: "", answers: {}, step: 0 };
 
 function readDraft(): Draft {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? { ...EMPTY, ...JSON.parse(raw) } : EMPTY;
+    if (!raw) return EMPTY;
+    // Older drafts may carry fields this form no longer asks for; keep only what it uses.
+    const { name, answers, step } = { ...EMPTY, ...JSON.parse(raw) } as Draft;
+    return { name, answers, step };
   } catch {
     return EMPTY;
   }
@@ -35,7 +37,7 @@ export default function AssessmentPage() {
   const [loaded, setLoaded] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const [error, setError] = useState("");
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,8 +59,7 @@ export default function AssessmentPage() {
   const progress = Math.round((answered / QUESTIONS.length) * 100);
   const current = step > 0 ? steps[step - 1] : [];
   const nameError = !draft.name.trim() ? "Please enter your name." : "";
-  const emailError = draft.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email) ? "That email doesn't look right." : "";
-  const stepIncomplete = step === 0 ? Boolean(nameError || emailError) : current.some((q) => !answers[q.id]);
+  const stepIncomplete = step === 0 ? Boolean(nameError) : current.some((q) => !answers[q.id]);
   const isLast = step === totalSteps - 1;
 
   function go(to: number) {
@@ -74,29 +75,26 @@ export default function AssessmentPage() {
       if (firstMissing) document.getElementById(`q-${firstMissing.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    if (isLast) void submit();
+    if (isLast) submit();
     else go(step + 1);
   }
 
-  async function submit() {
+  // Scoring happens in the browser; the report link carries the answers and name.
+  function submit() {
     setSubmitting(true);
-    setServerError("");
+    setError("");
+    let code: string;
     try {
-      const res = await fetch("/api/submissions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: draft.name, email: draft.email, group: draft.group, answers }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Something went wrong.");
-      try {
-        localStorage.removeItem(STORAGE_KEY);
-      } catch {}
-      router.push(`/report/${data.id}?new=1`);
-    } catch (e) {
-      setServerError((e as Error).message);
+      code = encodeProfile(draft.name, answers);
+    } catch {
+      setError("Some answers are missing. Please go back and check each part.");
       setSubmitting(false);
+      return;
     }
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {}
+    router.push(`/report/#${code}`);
   }
 
   if (!loaded) return <div className="h-64" />;
@@ -137,41 +135,22 @@ export default function AssessmentPage() {
               Answer how you <em>usually</em> are, not how you think you should be. Go with your first instinct; there are
               no right answers. Your progress saves automatically on this device.
             </p>
+            <p className="mt-2 text-sm text-ink-soft">
+              We only ask for your name, which appears on your report. A first name or nickname is fine. Nothing is
+              saved anywhere: your report lives in its own link.
+            </p>
           </div>
           <label className="block space-y-1.5">
-            <span className="text-sm font-medium">Your name *</span>
+            <span className="text-sm font-medium">Your name</span>
             <input
               className="input"
               value={draft.name}
-              maxLength={80}
+              maxLength={MAX_NAME_LENGTH}
               autoComplete="name"
               onChange={(e) => setDraft({ ...draft, name: e.target.value })}
               aria-invalid={showErrors && !!nameError}
             />
             {showErrors && nameError && <span className="text-xs text-social">{nameError}</span>}
-          </label>
-          <label className="block space-y-1.5">
-            <span className="text-sm font-medium">Email (optional)</span>
-            <input
-              className="input"
-              type="email"
-              value={draft.email}
-              maxLength={120}
-              autoComplete="email"
-              onChange={(e) => setDraft({ ...draft, email: e.target.value })}
-              aria-invalid={showErrors && !!emailError}
-            />
-            {showErrors && emailError && <span className="text-xs text-social">{emailError}</span>}
-          </label>
-          <label className="block space-y-1.5">
-            <span className="text-sm font-medium">Group or team (optional)</span>
-            <input
-              className="input"
-              placeholder="e.g. Book club, Design team"
-              value={draft.group}
-              maxLength={60}
-              onChange={(e) => setDraft({ ...draft, group: e.target.value })}
-            />
           </label>
         </div>
       ) : (
@@ -201,9 +180,9 @@ export default function AssessmentPage() {
         </ol>
       )}
 
-      {serverError && (
+      {error && (
         <p className="mt-4 rounded-xl border border-social/40 bg-social/5 p-3 text-sm text-social" role="alert">
-          {serverError}
+          {error}
         </p>
       )}
       {showErrors && stepIncomplete && step > 0 && (

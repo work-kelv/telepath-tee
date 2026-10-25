@@ -29,9 +29,9 @@ export function BehaviorSpectrum({ attr, percentile, third }: { attr: BehaviorKe
           aria-hidden
         />
       </div>
-      <div className="mt-1.5 grid grid-cols-5 text-center text-[11px] text-ink-muted">
-        {b.spectrum.map((l) => (
-          <span key={l} className="truncate">
+      <div className="mt-1.5 flex justify-between text-[11px] text-ink-muted sm:grid sm:grid-cols-5 sm:text-center">
+        {b.spectrum.map((l, i) => (
+          <span key={l} className={i % 2 ? "hidden truncate sm:block" : "truncate"}>
             {l}
           </span>
         ))}

@@ -14,16 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen font-sans">
         <header className="no-print border-b border-line bg-white/80 backdrop-blur">
           <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
+            <Link href="/" className="flex items-center gap-2 py-2.5 font-semibold">
               <Brain className="h-5 w-5" aria-hidden />
               <span>Profile</span>
             </Link>
             <div className="flex items-center gap-1 text-sm">
-              <Link href="/assessment" className="rounded-lg px-3 py-1.5 hover:bg-surface-sunken">
+              <Link href="/assessment/" className="rounded-lg px-3 py-2.5 hover:bg-surface-sunken">
                 Take it
-              </Link>
-              <Link href="/admin" className="rounded-lg px-3 py-1.5 hover:bg-surface-sunken">
-                Admin
               </Link>
             </div>
           </nav>
@@ -31,7 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="mx-auto max-w-5xl px-4 py-8 sm:py-10">{children}</main>
         <footer className="no-print mx-auto max-w-5xl px-4 pb-10 text-xs text-ink-muted">
           Inspired by the Emergenetics&reg; model. This is an unofficial, informal tool for friends: it is not the
-          Emergenetics Profile, and results describe preferences, not abilities.
+          Emergenetics Profile, and results describe preferences, not abilities. Nothing you enter is stored: each
+          report lives only in its own link.
         </footer>
       </body>
     </html>

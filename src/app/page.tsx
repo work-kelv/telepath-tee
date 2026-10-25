@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Clock, Lock, Users } from "lucide-react";
+import { ArrowRight, Clock, Lock } from "lucide-react";
 import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, THINKING_KEYS } from "@/lib/attributes";
 import { QUESTIONS } from "@/lib/questions";
 
@@ -17,7 +17,7 @@ export default function Home() {
           card. Preferences aren&rsquo;t abilities. There are no good or bad profiles.
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <Link href="/assessment" className="btn-primary">
+          <Link href="/assessment/" className="btn-primary">
             Start the questionnaire <ArrowRight className="h-4 w-4" />
           </Link>
           <span className="flex items-center gap-1.5 text-sm text-ink-muted">
@@ -61,17 +61,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid gap-4 text-sm sm:grid-cols-2">
-        <div className="flex gap-3">
-          <Users className="mt-0.5 h-5 w-5 shrink-0 text-ink-muted" />
-          <p className="text-ink-soft">
-            Compare profiles side by side to spot team balance, missing perspectives and likely communication clashes.
-          </p>
-        </div>
+      <section className="text-sm">
         <div className="flex gap-3">
           <Lock className="mt-0.5 h-5 w-5 shrink-0 text-ink-muted" />
           <p className="text-ink-soft">
-            Everything stays on this computer. Each report has a private link; only the admin can see the full list.
+            Nothing is stored. You only give a name, scoring happens in your browser, and your report lives in its own
+            link. Share it with whoever you like.
           </p>
         </div>
       </section>

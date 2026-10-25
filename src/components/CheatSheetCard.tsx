@@ -9,7 +9,7 @@ import type { CheatSheet } from "@/lib/insights";
 import { ThinkingMixBar } from "./ThinkingMixBar";
 
 interface Props {
-  id: string;
+  code: string;
   name: string;
   title: string;
   percentages: Record<ThinkingKey, number>;
@@ -25,7 +25,7 @@ const SECTIONS: Array<{ key: keyof CheatSheet; label: string }> = [
   { key: "avoid", label: "Please avoid" },
 ];
 
-export function CheatSheetCard({ id, name, title, percentages, preferences, behaviorLabels, sheet }: Props) {
+export function CheatSheetCard({ code, name, title, percentages, preferences, behaviorLabels, sheet }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
 
@@ -34,9 +34,20 @@ export function CheatSheetCard({ id, name, title, percentages, preferences, beha
     setBusy(true);
     try {
       const url = await toPng(ref.current, { pixelRatio: 2, backgroundColor: "#ffffff" });
+      const filename = `how-to-work-with-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "me"}.png`;
+      // Phones: hand the image to the share sheet, which offers "Save Image" and messaging apps.
+      const file = new File([await (await fetch(url)).blob()], filename, { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: `How to work with ${name}` });
+          return;
+        } catch (e) {
+          if ((e as Error).name === "AbortError") return;
+        }
+      }
       const a = document.createElement("a");
       a.href = url;
-      a.download = `how-to-work-with-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
+      a.download = filename;
       a.click();
     } finally {
       setBusy(false);
@@ -46,7 +57,7 @@ export function CheatSheetCard({ id, name, title, percentages, preferences, beha
   return (
     <div className="mx-auto max-w-xl space-y-4">
       <div className="no-print flex flex-wrap items-center justify-between gap-2">
-        <Link href={`/report/${id}`} className="btn-ghost">
+        <Link href={`/report/#${code}`} className="btn-ghost">
           <ArrowLeft className="h-4 w-4" /> Full report
         </Link>
         <div className="flex gap-2">

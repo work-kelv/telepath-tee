@@ -17,12 +17,12 @@ export function LikertScale({
   return (
     <fieldset>
       <legend className="sr-only">How much do you agree?</legend>
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {LIKERT.map((opt) => {
           const selected = value === opt.value;
           const intensity = Math.abs(opt.value - 4);
           return (
-            <label key={opt.value} className="group cursor-pointer" title={opt.label}>
+            <label key={opt.value} className="group block cursor-pointer py-1" title={opt.label}>
               <input
                 type="radio"
                 name={name}
