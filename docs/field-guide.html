@@ -1,0 +1,440 @@
+<title>Teaming Up Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Patrick+Hand&display=swap">
+<style>
+/* Layout: a stack of self-contained "panels" (each exportable as an image), comic strips drawn in SVG with HTML speech bubbles. */
+:root {
+  --paper: #f4f6fb;
+  --card: #ffffff;
+  --ink: #1b1d29;
+  --ink-soft: #4a4e62;
+  --muted: #767b91;
+  --line: #dde0ea;
+  --ana: #3a78e0;
+  --str: #17703d;
+  --soc: #ee5e57;
+  --con: #d9a514;
+  --beh: #7c4dcc;
+  --beh-soft: #ebe3f9;
+  --outline: #1b1d29;
+  --eye: #ffffff;
+  --bubble: #ffffff;
+  --bubble-ink: #1b1d29;
+  --floor: #e3e6f0;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-comic: "Patrick Hand", "Comic Neue", "Chalkboard SE", "Segoe Print", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12131b; --card: #1c1e2a; --ink: #eceef5; --ink-soft: #b8bccd; --muted: #8b90a6; --line: #2f3245;
+    --ana: #5b95f0; --str: #2fa35e; --soc: #ff7a72; --con: #e9bc3a; --beh: #a07bea; --beh-soft: #2b2440;
+    --outline: #0b0c12; --eye: #ffffff; --bubble: #f6f6fa; --bubble-ink: #1b1d29; --floor: #262938;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12131b; --card: #1c1e2a; --ink: #eceef5; --ink-soft: #b8bccd; --muted: #8b90a6; --line: #2f3245;
+  --ana: #5b95f0; --str: #2fa35e; --soc: #ff7a72; --con: #e9bc3a; --beh: #a07bea; --beh-soft: #2b2440;
+  --outline: #0b0c12; --eye: #ffffff; --bubble: #f6f6fa; --bubble-ink: #1b1d29; --floor: #262938;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 48px;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 700 0.75rem/1 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--ink-soft); max-width: 62ch; font-size: 1.05rem; }
+
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: clamp(18px, 3.5vw, 32px); display: grid; gap: 20px; }
+.panel-head { display: grid; gap: 8px; }
+.panel-num { font: 800 0.8rem/1 var(--font-display); color: var(--muted); letter-spacing: 0.08em; }
+
+/* Comic frames */
+.strip { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.strip.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.strip.one { grid-template-columns: 1fr; }
+@media (max-width: 720px) { .strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .strip.two { grid-template-columns: 1fr; } }
+.frame { position: relative; border: 3px solid var(--outline); border-radius: 6px; background: var(--paper); overflow: hidden; aspect-ratio: 4 / 3.4; max-width: 100%; }
+.strip.one .frame { aspect-ratio: 16 / 7; }
+.frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.frame .caption { position: absolute; left: 0; top: 0; background: var(--con); color: var(--bubble-ink); font: 700 0.72rem/1.2 var(--font-body); padding: 4px 8px; border-right: 3px solid var(--outline); border-bottom: 3px solid var(--outline); letter-spacing: 0.04em; text-transform: uppercase; max-width: 70%; }
+.bubble { position: absolute; background: var(--bubble); color: var(--bubble-ink); border: 2.5px solid var(--outline); border-radius: 16px; padding: 5px 9px; font: 1.02rem/1.15 var(--font-comic); text-align: center; max-width: 62%; box-shadow: 2px 2px 0 var(--outline); }
+.strip.one .bubble { font-size: clamp(0.95rem, 2vw, 1.2rem); max-width: 27%; }
+.bubble.p1 { left: 3%; top: 17%; }
+.bubble.p2 { left: 24%; top: 30%; }
+.bubble.p3 { right: 24%; top: 30%; }
+.bubble.p4 { right: 3%; top: 17%; }
+.bubble.solo { left: 7%; right: 7%; top: 17%; max-width: none; }
+@media (max-width: 560px) {
+  .strip.one .frame { aspect-ratio: 1 / 1; }
+  .strip.one .bubble { max-width: 45%; font-size: 0.95rem; }
+  .bubble.p2 { left: 3%; top: 40%; }
+  .bubble.p3 { right: 3%; top: 40%; }
+  .bubble.solo { font-size: 0.92rem; top: 19%; }
+}
+.bubble::after { content: ""; position: absolute; bottom: -11px; width: 14px; height: 14px; background: var(--bubble); border-right: 2.5px solid var(--outline); border-bottom: 2.5px solid var(--outline); transform: rotate(45deg) skew(12deg, 12deg); }
+.bubble.tl::after { left: 18%; }
+.bubble.tr::after { right: 18%; }
+.bubble.tc::after { left: calc(50% - 7px); }
+.bubble.shout { font-weight: 400; letter-spacing: 0.02em; border-radius: 6px; }
+.under { font: 0.95rem/1.35 var(--font-comic); color: var(--ink-soft); text-align: center; }
+
+/* Attribute cards */
+.grid4 { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 820px) { .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .grid4 { grid-template-columns: 1fr; } }
+.attr { border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.attr .tag { display: flex; align-items: center; gap: 8px; }
+.attr .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--outline); flex: none; }
+.attr .ask { font: 1.35rem/1 var(--font-comic); }
+.attr ul { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 0.92rem; display: grid; gap: 2px; }
+.attr svg { width: 72px; height: 80px; }
+
+/* Behaviour spectrums */
+.spectra { display: grid; gap: 18px; }
+.spec { display: grid; gap: 6px; }
+.spec-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; align-items: baseline; }
+.spec-top p { color: var(--ink-soft); font-size: 0.92rem; }
+.bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; height: 34px; }
+.bar span { background: var(--beh); color: #fff; display: grid; place-items: center; font: 700 0.72rem/1 var(--font-body); letter-spacing: 0.05em; text-transform: uppercase; }
+.bar span:first-child { border-radius: 17px 0 0 17px; opacity: 0.55; }
+.bar span:nth-child(2) { opacity: 0.75; }
+.bar span:last-child { border-radius: 0 17px 17px 0; }
+.labels { display: grid; grid-template-columns: repeat(5, 1fr); font-size: 0.8rem; color: var(--muted); text-align: center; }
+
+/* How to read */
+.read { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 24px; align-items: center; }
+@media (max-width: 720px) { .read { grid-template-columns: 1fr; } }
+.big { font: 800 clamp(2.6rem, 8vw, 4rem)/1 var(--font-display); letter-spacing: -0.03em; }
+.crowd { display: grid; gap: 14px; }
+.crowd-row { display: grid; gap: 4px; }
+.crowd-row .people { display: flex; flex-wrap: nowrap; gap: 2px; }
+.crowd-row .people i { flex: 1 1 0; height: 22px; min-width: 0; background: var(--line); border-radius: 50% 50% 3px 3px; }
+.crowd-row .people i.me { background: var(--soc); outline: 2px solid var(--outline); }
+.crowd-row small { color: var(--muted); }
+
+/* Profile gallery */
+.family { display: grid; gap: 10px; }
+.family h3 { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.family h3 small { font: 400 0.85rem var(--font-body); color: var(--muted); }
+.cards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.prof { border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; }
+.prof svg { width: 54px; height: 54px; }
+.prof q { font: 1.05rem/1.2 var(--font-comic); quotes: "\201C" "\201D"; }
+.prof .meta { font-size: 0.78rem; color: var(--muted); margin-top: 4px; display: flex; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+.prof .meta b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.change { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .change { grid-template-columns: 1fr; } }
+.change div { border: 1px dashed var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; }
+.change b { font-family: var(--font-display); font-size: 1.05rem; }
+.change span { color: var(--ink-soft); font-size: 0.92rem; }
+
+footer { color: var(--muted); font-size: 0.82rem; text-align: center; max-width: 70ch; margin: 0 auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .frame svg .wobble { animation: wob 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes wob { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-2.5deg); } }
+}
+</style>
+
+<div class="wrap">
+
+  <header class="panel" id="p-hero">
+    <div class="panel-head">
+      <p class="eyebrow">Teaming Up! &middot; field guide</p>
+      <h1>There&rsquo;s a committee in your head.</h1>
+      <p class="lede">Emergenetics describes how you prefer to <strong>think</strong> (four colors) and how you <strong>behave</strong> (three spectrums). The patterns emerge from your genetic blueprint plus your life experience. They describe preferences, not talent: everyone can do everything, some things just cost more energy.</p>
+    </div>
+    <div class="strip one">
+      <div class="frame" data-scene="committee"></div>
+    </div>
+  </header>
+
+  <section class="panel" id="p-thinking">
+    <div class="panel-head">
+      <span class="panel-num">THINKING &middot; 4 COLORS</span>
+      <h2>Meet the committee members</h2>
+      <p class="lede">Each color asks a different first question. Your profile shows how much energy you give each one.</p>
+    </div>
+    <div class="grid4" id="attr-cards"></div>
+  </section>
+
+  <section class="panel" id="p-plan">
+    <div class="panel-head">
+      <span class="panel-num">COMIC &middot; SAME NEWS, FOUR BRAINS</span>
+      <h2>&ldquo;Team, we&rsquo;re changing the plan.&rdquo;</h2>
+    </div>
+    <div class="strip" id="plan-strip"></div>
+    <p class="under">Nobody is wrong. Each one is asking the question their brain asks first.</p>
+  </section>
+
+  <section class="panel" id="p-behaviour">
+    <div class="panel-head">
+      <span class="panel-num">BEHAVIOR &middot; 3 SPECTRUMS</span>
+      <h2>How you show up</h2>
+      <p class="lede">Behaviors are measured separately from thinking. Each is a 0&ndash;100 percentile split into thirds. The middle third is the &ldquo;It Depends&rdquo; crowd, who flex with the situation.</p>
+    </div>
+    <div class="spectra" id="spectra"></div>
+    <div class="strip" id="beh-strip"></div>
+  </section>
+
+  <section class="panel" id="p-read">
+    <div class="panel-head">
+      <span class="panel-num">READING YOUR PROFILE</span>
+      <h2>Two numbers, two different questions</h2>
+    </div>
+    <div class="read">
+      <div class="crowd">
+        <p class="big">&ge;23%</p>
+        <p><strong>Percentage</strong> answers &ldquo;how is <em>my</em> thinking energy split?&rdquo; The four colors add up to 100%. Any color at 23% or more counts as a preference.</p>
+      </div>
+      <div class="crowd">
+        <p><strong>Percentile</strong> answers &ldquo;how loud is it compared with <em>everyone else</em>?&rdquo; It reflects the energy you spend on that kind of thinking or behaving.</p>
+        <div class="crowd-row"><div class="people" data-me="32"></div><small>32nd percentile: louder than about a third of people</small></div>
+        <div class="crowd-row"><div class="people" data-me="95"></div><small>95th percentile: louder than almost everyone</small></div>
+        <p class="under" style="text-align:left">Two people can both be 30% Social. One may be at the 32nd percentile, the other at the 95th. Same mix, different volume.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-profiles">
+    <div class="panel-head">
+      <span class="panel-num">PROFILE GALLERY</span>
+      <h2>Which mix are you?</h2>
+      <p class="lede">Profiles are grouped by how many colors are preferences. Each comes with its unofficial motto and how common it is.</p>
+    </div>
+    <div id="families" style="display:grid;gap:22px"></div>
+  </section>
+
+  <section class="panel" id="p-love">
+    <div class="panel-head">
+      <span class="panel-num">RELATIONSHIP PROFILES</span>
+      <h2>Opposites attract. Then they plan a vacation.</h2>
+    </div>
+    <div class="strip two" id="love-strip"></div>
+    <p class="under">Different profiles make strong pairs, as long as each one speaks the other&rsquo;s language now and then.</p>
+  </section>
+
+  <section class="panel" id="p-change">
+    <div class="panel-head">
+      <span class="panel-num">CAN A PROFILE CHANGE?</span>
+      <h2>Mostly stable, but yes</h2>
+      <p class="lede">Profiles stay remarkably stable for years. Three things can shift them:</p>
+    </div>
+    <div class="change">
+      <div><b>Conscious effort</b><span>Practicing a non-preferred color on purpose, like a new degree, job or habit.</span></div>
+      <div><b>A significant life event</b><span>Becoming a parent, a loss, a move across the world.</span></div>
+      <div><b>Drugs or alcohol</b><span>A temporary change. Please don&rsquo;t take your profile after the office party.</span></div>
+    </div>
+    <div class="strip one"><div class="frame" data-scene="platinum"></div></div>
+  </section>
+
+  <footer>Summary of the &ldquo;Teaming Up! With Emergenetics&rdquo; workshop. Emergenetics&reg; is a registered trademark of Emergenetics International. This is an unofficial study guide with original illustrations; profile mottos and population shares are as presented in the workshop.</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var C = { ana: "var(--ana)", str: "var(--str)", soc: "var(--soc)", con: "var(--con)", beh: "var(--beh)" };
+
+  // ---- Character drawing --------------------------------------------------
+  // A bean-shaped character centred on (x, y = feet), height ~110 * s.
+  function mouth(m) {
+    switch (m) {
+      case "open": return '<ellipse cx="0" cy="-50" rx="7" ry="7" fill="var(--outline)"/>';
+      case "flat": return '<path d="M-8 -50 L8 -50" stroke="var(--outline)" stroke-width="3" stroke-linecap="round" fill="none"/>';
+      case "worried": return '<path d="M-9 -46 Q0 -54 9 -46" stroke="var(--outline)" stroke-width="3" stroke-linecap="round" fill="none"/>';
+      case "smug": return '<path d="M-8 -50 Q3 -45 10 -54" stroke="var(--outline)" stroke-width="3" stroke-linecap="round" fill="none"/>';
+      default: return '<path d="M-10 -52 Q0 -42 10 -52" stroke="var(--outline)" stroke-width="3" stroke-linecap="round" fill="none"/>';
+    }
+  }
+  function accessory(kind) {
+    switch (kind) {
+      case "ana": return '<g fill="none" stroke="var(--outline)" stroke-width="2.5"><circle cx="-11" cy="-70" r="10"/><circle cx="11" cy="-70" r="10"/><path d="M-1 -70 L1 -70"/></g>';
+      case "str": return '<g><rect x="22" y="-42" width="22" height="28" rx="2" fill="var(--eye)" stroke="var(--outline)" stroke-width="2.5"/><path d="M27 -33 l3 3 l6 -6 M27 -23 l3 3 l6 -6" stroke="var(--str)" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>';
+      case "soc": return '<path d="M0 -14 C-10 -24 -16 -14 0 -2 C16 -14 10 -24 0 -14Z" fill="var(--eye)" stroke="var(--outline)" stroke-width="2"/>';
+      case "con": return '<g><circle cx="0" cy="-122" r="11" fill="var(--con)" stroke="var(--outline)" stroke-width="2.5"/><rect x="-5" y="-112" width="10" height="7" fill="var(--line)" stroke="var(--outline)" stroke-width="2"/><path d="M-20 -128 l-7 -3 M20 -128 l7 -3 M0 -139 l0 -7" stroke="var(--con)" stroke-width="3" stroke-linecap="round"/></g>';
+      default: return "";
+    }
+  }
+  function ch(kind, x, y, s, o) {
+    o = o || {};
+    var look = o.look || 0, fill = C[o.color || kind] || C.beh;
+    var arms = o.arms === "up"
+      ? '<path d="M-28 -45 L-44 -78 M28 -45 L44 -78" stroke="var(--outline)" stroke-width="4" stroke-linecap="round"/>'
+      : o.arms === "cross"
+        ? '<path d="M-26 -30 L12 -26 M26 -30 L-12 -26" stroke="var(--outline)" stroke-width="4" stroke-linecap="round"/>'
+        : '<path d="M-29 -40 L-38 -14 M29 -40 L38 -14" stroke="var(--outline)" stroke-width="4" stroke-linecap="round"/>';
+    var sweat = o.sweat ? '<path d="M24 -88 q5 8 0 12 q-5 -4 0 -12z" fill="var(--ana)" stroke="var(--outline)" stroke-width="1.5"/>' : "";
+    var flip = o.flip ? " scale(-1,1)" : "";
+    // The wobble animation sits on an inner group: a CSS transform would replace the placement transform.
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')' + flip + '"><g' + (o.wobble ? ' class="wobble"' : "") + '>' +
+      '<ellipse cx="0" cy="2" rx="30" ry="5" fill="var(--floor)"/>' + arms +
+      '<path d="M-30 -60 C-30 -112 30 -112 30 -60 L32 -10 C32 4 -32 4 -32 -10 Z" fill="' + fill + '" stroke="var(--outline)" stroke-width="3"/>' +
+      '<circle cx="-11" cy="-70" r="8" fill="var(--eye)" stroke="var(--outline)" stroke-width="2"/><circle cx="11" cy="-70" r="8" fill="var(--eye)" stroke="var(--outline)" stroke-width="2"/>' +
+      '<circle cx="' + (-11 + look) + '" cy="-69" r="3.6" fill="var(--outline)"/><circle cx="' + (11 + look) + '" cy="-69" r="3.6" fill="var(--outline)"/>' +
+      mouth(o.mouth) + accessory(o.acc === undefined ? kind : o.acc) + sweat + '</g></g>';
+  }
+  function svg(vb, inner) { return '<svg viewBox="' + vb + '" preserveAspectRatio="xMidYMax meet" aria-hidden="true">' + inner + "</svg>"; }
+  // Positioned bubble for the wide scenes; "pos" is a CSS class (p1..p4) with desktop and phone layouts.
+  function bubble(text, pos, tail, cls) {
+    return '<div class="bubble ' + pos + " " + (tail || "tl") + " " + (cls || "") + '">' + text + "</div>";
+  }
+  // The single bubble at the top of a small panel.
+  function solo(text, cls) {
+    return '<div class="bubble solo tc ' + (cls || "") + '">' + text + "</div>";
+  }
+  function frame(scene, label) {
+    return '<div class="frame" role="img" aria-label="' + label.replace(/"/g, "&quot;") + '">' + scene + "</div>";
+  }
+
+  // ---- Scenes ---------------------------------------------------------------
+  var scenes = {
+    committee:
+      svg("0 0 400 175",
+        '<rect x="110" y="128" width="180" height="16" rx="8" fill="var(--line)" stroke="var(--outline)" stroke-width="3"/>' +
+        ch("ana", 70, 168, 0.75, { look: 2, mouth: "flat", wobble: true }) +
+        ch("str", 150, 168, 0.75, { look: 2 }) +
+        ch("soc", 250, 168, 0.75, { look: -2, mouth: "happy" }) +
+        ch("con", 330, 168, 0.75, { look: -2, mouth: "open", arms: "up", wobble: true })) +
+      '<div class="caption">Problem solving committee, in session</div>' +
+      bubble("What does the research say?", "p1", "tl") +
+      bubble("What&rsquo;s the process?", "p2", "tl") +
+      bubble("Who should be on the team?", "p3", "tr") +
+      bubble("How about a totally new way?!", "p4", "tr"),
+    platinum:
+      svg("0 0 400 175",
+        ch("ana", 110, 168, 0.75, { look: 3, mouth: "happy" }) +
+        ch("con", 290, 168, 0.75, { look: -3, mouth: "open", flip: false, arms: "up" })) +
+      '<div class="caption">The Platinum Rule</div>' +
+      bubble("I made you a 3-page summary with sources.", "p1", "tl") +
+      bubble("&hellip;and a one-slide picture version. You&rsquo;re welcome.", "p2", "tl") +
+      bubble("You get me!!", "p4", "tr", "shout")
+  };
+
+  document.querySelectorAll("[data-scene]").forEach(function (el) {
+    el.innerHTML = scenes[el.dataset.scene];
+    el.setAttribute("role", "img");
+  });
+  document.querySelector('[data-scene="committee"]').setAttribute("aria-label", "Four characters at a table: Analytical asks what the research says, Structural asks for the process, Social asks who should be on the team, Conceptual suggests a totally new way.");
+  document.querySelector('[data-scene="platinum"]').setAttribute("aria-label", "An Analytical character hands a Conceptual friend a three-page summary plus a one-slide picture version; the Conceptual friend shouts: You get me!");
+
+  // ---- Thinking cards -------------------------------------------------------
+  var ATTR = [
+    { k: "ana", name: "Analytical", ask: "What &amp; why?", traits: ["Enjoys technical problem solving", "Logical and objective", "Naturally skeptical", "Likes exploring how things work"] },
+    { k: "str", name: "Structural", ask: "How?", traits: ["Enjoys directions", "Predictable and thorough", "Makes and follows plans carefully", "Prefers rules and guidelines"] },
+    { k: "soc", name: "Social", ask: "Who?", traits: ["Enjoys helping others", "Sympathetic and empathic", "Likes to relate and feel connected", "Likes working in groups"] },
+    { k: "con", name: "Conceptual", ask: "What if? How about?", traits: ["Enjoys the creative process", "Imaginative and visionary", "Likes the unusual", "Solves problems intuitively"] }
+  ];
+  document.getElementById("attr-cards").innerHTML = ATTR.map(function (a) {
+    return '<div class="attr">' + '<svg viewBox="-55 -150 110 158" aria-hidden="true">' + ch(a.k, 0, 0, 1, { mouth: a.k === "ana" ? "flat" : "happy" }) + "</svg>" +
+      '<div class="tag"><span class="dot" style="background:' + C[a.k] + '"></span><h3>' + a.name + "</h3></div>" +
+      '<p class="ask">' + a.ask + "</p><ul>" + a.traits.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul></div>";
+  }).join("");
+
+  // ---- Plan-change strip ----------------------------------------------------
+  var PLAN = [
+    { k: "ana", line: "Interesting. Show me the data behind that.", o: { mouth: "flat", look: 2, arms: "cross" } },
+    { k: "str", line: "But&hellip; it&rsquo;s not on the agenda.", o: { mouth: "worried", sweat: true } },
+    { k: "soc", line: "Okay! But how is everyone feeling about it?", o: { mouth: "happy", look: -2 } },
+    { k: "con", line: "Ooh. What if we change EVERYTHING?", o: { mouth: "open", arms: "up", wobble: true } }
+  ];
+  document.getElementById("plan-strip").innerHTML = PLAN.map(function (p, i) {
+    var name = ATTR[i].name;
+    return frame(svg("0 0 200 170", ch(p.k, 100, 165, 0.8, p.o)) + '<div class="caption">' + name + "</div>" + solo(p.line), name + ' says: ' + p.line.replace(/&[a-z]+;/g, "'"));
+  }).join("");
+
+  // ---- Behaviour spectrums + strip -------------------------------------------
+  var BEH = [
+    { name: "Expressiveness", def: "The outward display of emotions and thoughts toward others", labels: ["Quiet", "Introspective", "Reserved", "Talkative", "Gregarious"] },
+    { name: "Assertiveness", def: "The style and pace with which you advance thoughts, feelings and beliefs", labels: ["Peacekeeping", "Easygoing", "Competitive", "Forceful", "Driving"] },
+    { name: "Flexibility", def: "The willingness to accommodate and welcome change", labels: ["Focused", "Firm", "Adaptable", "Accommodating", "Welcomes change"] }
+  ];
+  document.getElementById("spectra").innerHTML = BEH.map(function (b) {
+    return '<div class="spec"><div class="spec-top"><h3>' + b.name + "</h3><p>" + b.def + "</p></div>" +
+      '<div class="bar"><span>First third &middot; 0&ndash;33</span><span>It depends &middot; 34&ndash;66</span><span>Third third &middot; 67&ndash;100</span></div>' +
+      '<div class="labels">' + b.labels.map(function (l) { return "<span>" + l + "</span>"; }).join("") + "</div></div>";
+  }).join("");
+
+  var BSTRIP = [
+    { cap: "Expressiveness: low", line: "This quiet corner is perfect.", o: { mouth: "happy", look: -3 } },
+    { cap: "Expressiveness: high", line: "WHO WANTS KARAOKE?!", o: { mouth: "open", arms: "up", wobble: true }, shout: true },
+    { cap: "Assertiveness: high", line: "Decision made. Next item!", o: { mouth: "smug", arms: "cross" } },
+    { cap: "Flexibility: high", line: "Tuesday? Friday? Mars? I&rsquo;m in!", o: { mouth: "open", look: 2 } }
+  ];
+  document.getElementById("beh-strip").innerHTML = BSTRIP.map(function (p) {
+    return frame(svg("0 0 200 170", ch("beh", 100, 165, 0.8, Object.assign({ color: "beh", acc: "" }, p.o))) + '<div class="caption">' + p.cap + "</div>" + solo(p.line, p.shout ? "shout" : ""), p.cap + ": " + p.line.replace(/&[a-z]+;/g, "'"));
+  }).join("");
+
+  // ---- Percentile crowd --------------------------------------------------------
+  document.querySelectorAll(".people").forEach(function (row) {
+    var me = Math.round(Number(row.dataset.me) / 100 * 20), html = "";
+    for (var i = 1; i <= 20; i++) html += '<i class="' + (i === Math.max(1, me) ? "me" : "") + '"></i>';
+    row.innerHTML = html;
+  });
+
+  // ---- Profile gallery -----------------------------------------------------------
+  // Pie order follows the profile chart: Analytical top-left, Conceptual top-right, Social bottom-right, Structural bottom-left.
+  function pie(p) {
+    var order = [["con", p[3]], ["soc", p[2]], ["str", p[1]], ["ana", p[0]]], a = 0, out = "";
+    order.forEach(function (o) {
+      var sweep = o[1] / 100 * Math.PI * 2, x1 = 27 + 24 * Math.sin(a), y1 = 27 - 24 * Math.cos(a);
+      a += sweep;
+      var x2 = 27 + 24 * Math.sin(a), y2 = 27 - 24 * Math.cos(a);
+      out += '<path d="M27 27 L' + x1.toFixed(2) + " " + y1.toFixed(2) + " A24 24 0 " + (sweep > Math.PI ? 1 : 0) + " 1 " + x2.toFixed(2) + " " + y2.toFixed(2) + 'Z" fill="' + C[o[0]] + '" stroke="var(--card)" stroke-width="1.5"/>';
+    });
+    return '<svg viewBox="0 0 54 54" aria-hidden="true">' + out + '<circle cx="27" cy="27" r="24" fill="none" stroke="var(--outline)" stroke-width="2"/></svg>';
+  }
+  var FAM = [
+    { t: "Uni-modal", sub: "one preference", items: [
+      ["Analytical", "In God we trust&hellip; all others must bring data.", 1, [64, 12, 12, 12]],
+      ["Structural", "Of course I don&rsquo;t look busy, I did it right the first time.", 6, [12, 64, 12, 12]],
+      ["Social", "I wear my heart on my sleeve.", 1, [12, 12, 64, 12]],
+      ["Conceptual", "I feel like I&rsquo;m diagonally parked in a parallel universe.", 2, [12, 12, 12, 64]] ] },
+    { t: "Bi-modal", sub: "two preferences", items: [
+      ["Analytical + Structural", "Make a plan and follow it.", 15, [42, 40, 9, 9]],
+      ["Structural + Social", "I&rsquo;d love to share the experience with you, but please make an appointment first.", 14, [8, 44, 40, 8]],
+      ["Analytical + Conceptual", "I see the forest.", 13, [44, 8, 8, 40]],
+      ["Social + Conceptual", "Let&rsquo;s create this together.", 12, [7, 7, 42, 44]],
+      ["Structural + Conceptual", "Nailing jelly to the wall.", 4, [10, 40, 10, 40]],
+      ["Analytical + Social", "An informed head with a warm heart.", 3, [42, 10, 38, 10]] ] },
+    { t: "Tri-modal", sub: "three preferences", items: [
+      ["Analytical + Social + Conceptual", "What do you think of this global idea?", 12, [32, 8, 30, 30]],
+      ["Analytical + Structural + Social", "Efficiency with feeling.", 7, [30, 32, 30, 8]],
+      ["Analytical + Structural + Conceptual", "Ideas are for doing.", 5, [32, 30, 8, 30]],
+      ["Structural + Social + Conceptual", "Creative thinking with controlled emotions.", 5, [8, 30, 32, 30]] ] },
+    { t: "Quadra-modal", sub: "all four", items: [
+      ["All four colors", "Fair and balanced.", 1, [25, 25, 25, 25]] ] }
+  ];
+  document.getElementById("families").innerHTML = FAM.map(function (f) {
+    return '<div class="family"><h3>' + f.t + " <small>" + f.sub + '</small></h3><div class="cards">' + f.items.map(function (it) {
+      return '<div class="prof">' + pie(it[3]) + "<div><q>" + it[1] + '</q><div class="meta"><span>' + it[0] + "</span><b>" + it[2] + "% of people</b></div></div></div>";
+    }).join("") + "</div></div>";
+  }).join("");
+
+  // ---- Relationship strip ----------------------------------------------------------
+  var LOVE = [
+    { cap: "Partner A (blue + green)", k: "str", o: { mouth: "happy", look: 3 }, line: "Day 1, 07:00 breakfast. 07:25 museum. I made a spreadsheet!" },
+    { cap: "Partner B (red + yellow)", k: "con", o: { mouth: "open", arms: "up", look: -3, wobble: true }, line: "Or we fly somewhere random and make friends?" }
+  ];
+  document.getElementById("love-strip").innerHTML = LOVE.map(function (p) {
+    return frame(svg("0 0 200 170", ch(p.k, 100, 165, 0.8, p.o)) + '<div class="caption">' + p.cap + "</div>" + solo(p.line), p.cap + ": " + p.line);
+  }).join("");
+})();
+</script>

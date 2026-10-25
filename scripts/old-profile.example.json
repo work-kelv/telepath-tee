@@ -1,0 +1,12 @@
+{
+  "label": "Example: an earlier profile (replace with the percentiles from your own report)",
+  "percentiles": {
+    "analytical": 60,
+    "structural": 45,
+    "social": 70,
+    "conceptual": 80,
+    "expressiveness": 75,
+    "assertiveness": 50,
+    "flexibility": 65
+  }
+}
