@@ -53,6 +53,7 @@ Measured separately from thinking, each as a 0–100 percentile split into third
 - **Personal report.** Shows the thinking-mix donut, percentile bars and behavior spectrums, plus a written summary, communication tips, ideal environment, interaction strategies and how others can flex toward you. **Save PDF** uses print-specific styles.
 - **"How to work with me" card.** On phones, **Save as image** opens the share sheet (Save Image, Messages, WhatsApp and so on). On computers, it downloads a PNG.
 - **Share link.** On phones this opens the share sheet; on computers it copies the link.
+- **Group comparison.** Paste friends' report links into Compare to see everyone's thinking mix side by side, a combined-scores dot chart with the group average, missing thinking perspectives, pairs likely to clash (with tips) and pairs who think alike. The group lives in the compare page's own link. Anyone who receives it can also open each person's report.
 - **Tested on phones.** Checked at 360px (Android) and 375px (iPhone SE) for sideways scrolling and tap-target size.
 
 ## Quick start
@@ -69,7 +70,7 @@ npm run dev        # http://localhost:3000
 | `npm run dev` | Development server, also reachable from a phone on the same Wi-Fi |
 | `npm run build` | Builds the static site into `out/` |
 | `npm run preview` | Serves `out/` on port 4173 and prints a link for your phone |
-| `npm test` | Unit tests for the scoring engine and the report links |
+| `npm test` | Unit tests for the scoring engine, report links and group analysis |
 | `npm run typecheck` | TypeScript check |
 
 > **On exFAT or other drives without symlinks**, install with `npm install --no-bin-links`. The npm scripts call `node node_modules/...` directly, so they work either way.
@@ -90,6 +91,7 @@ Because the result is plain static files, any static host works too, such as Net
 | `/assessment/` | The questionnaire |
 | `/report/#<code>` | Personal report |
 | `/card/#<code>` | "How to work with me" card |
+| `/compare/#<code>~<code>~…` | Group comparison of up to 12 people |
 
 A code looks like `1.<56 digits>.<name>`: a format version, one digit per answer, and the name in URL-safe Base64. See `src/lib/share.ts`.
 
@@ -111,7 +113,7 @@ If someone has an older profile that exists only as published percentiles, `npm 
 npm run reconstruct -- "<current report link>" old-profile.json out-dir --base-url=https://work-kelv.github.io/telepath-tee
 ```
 
-It reverses the scoring, then moves the current answers by the fewest one-point steps needed to reproduce the old percentiles. It writes a JSON file and a CSV of then-vs-now answers, and prints a report link for the reconstructed profile. The estimate is the closest set of answers to today's that fits the old profile, not a record of real answers. See `scripts/old-profile.example.json` for the input format.
+It reverses the scoring, then moves the current answers by the fewest one-point steps needed to reproduce the old percentiles. It writes a JSON file and a CSV of then-vs-now answers, and prints a report link for the reconstructed profile plus a then-vs-now compare link. The estimate is the closest set of answers to today's that fits the old profile, not a record of real answers. See `scripts/old-profile.example.json` for the input format.
 
 ## Project layout
 
@@ -123,8 +125,9 @@ src/
     scoring.ts      # scoring engine (+ scoring.test.ts)
     insights.ts     # report narrative, interaction strategies, cheat sheet
     share.ts        # packs a profile into a link and back (+ share.test.ts)
+    team.ts         # group averages, coverage, clashes, allies (+ team.test.ts)
   app/              # Next.js App Router pages, exported as static files
-  components/       # charts, form, report, card
+  components/       # charts, form, report, card, dot chart
 scripts/            # preview server and reconstruct tool
 docs/               # field guide and training graphics
 ```

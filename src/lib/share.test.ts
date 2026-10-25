@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { codeFromLink, decodeProfile, encodeProfile } from "./share";
+import { codeFromLink, decodeGroup, decodeProfile, encodeGroup, encodeProfile } from "./share";
 import { QUESTIONS } from "./questions";
 import { score } from "./scoring";
 
@@ -43,4 +43,11 @@ test("full report links, card links and bare codes are understood", () => {
   assert.equal(codeFromLink(`  ${b}  `), b);
   assert.equal(codeFromLink(`https://example.github.io/telepath-tee/card/#${b}`), b);
   assert.equal(codeFromLink("https://example.com/report/#nope"), null);
+});
+
+test("compare links keep valid profiles in order and drop broken or repeated ones", () => {
+  const a = encodeProfile("A", answers);
+  const b = encodeProfile("B", answers);
+  assert.deepEqual(decodeGroup(`#${encodeGroup([a, "bad", b, a])}`), [a, b]);
+  assert.deepEqual(decodeGroup(""), []);
 });

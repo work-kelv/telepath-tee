@@ -58,3 +58,14 @@ export function codeFromLink(input: string): string | null {
   const hash = text.includes("#") ? text.slice(text.indexOf("#") + 1) : text;
   return decodeProfile(hash) ? hash : null;
 }
+
+/** Compare links hold several profile codes separated by "~". */
+export function encodeGroup(codes: string[]): string {
+  return codes.join("~");
+}
+
+/** Valid codes from a compare link, in order, without duplicates. Invalid parts are skipped. */
+export function decodeGroup(fragment: string): string[] {
+  const codes = fragment.replace(/^#/, "").split("~").filter((c) => decodeProfile(c));
+  return [...new Set(codes)];
+}

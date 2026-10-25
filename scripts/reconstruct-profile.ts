@@ -9,7 +9,7 @@
 //
 // Usage: npm run reconstruct -- "<current report link>" <old-profile.json> <out-dir> [--base-url=https://...]
 // The old-profile file holds the published percentiles; see scripts/old-profile.example.json.
-// Writes a JSON and a CSV of then-vs-now answers, and prints a report link for the
+// Writes a JSON and a CSV of then-vs-now answers, and prints report and compare links for the
 // reconstructed profile (nothing is stored anywhere).
 
 import { promises as fs } from "fs";
@@ -17,7 +17,7 @@ import path from "path";
 import { ATTRIBUTE_KEYS, type AttributeKey } from "../src/lib/attributes";
 import { QUESTIONS } from "../src/lib/questions";
 import { LIKERT_MAX, LIKERT_MIN, NORMS, normalCdf, score, type Answers } from "../src/lib/scoring";
-import { codeFromLink, decodeProfile, encodeProfile } from "../src/lib/share";
+import { codeFromLink, decodeProfile, encodeGroup, encodeProfile } from "../src/lib/share";
 
 interface OldProfile {
   label: string;
@@ -135,6 +135,7 @@ async function main() {
 
   const oldCode = encodeProfile(`${current.name} (earlier, reconstructed)`, answers);
   console.log(`Reconstructed report: ${baseUrl}/report/#${oldCode}`);
+  console.log(`Then vs now compare:  ${baseUrl}/compare/#${encodeGroup([code, oldCode])}`);
 
   console.log("attribute       official  reconstructed  current");
   for (const k of ATTRIBUTE_KEYS)

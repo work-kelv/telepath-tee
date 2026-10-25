@@ -22,6 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/assessment/" className="rounded-lg px-3 py-2.5 hover:bg-surface-sunken">
                 Take it
               </Link>
+              <Link href="/compare/" className="rounded-lg px-3 py-2.5 hover:bg-surface-sunken">
+                Compare
+              </Link>
             </div>
           </nav>
         </header>

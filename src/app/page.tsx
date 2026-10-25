@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Clock, Lock } from "lucide-react";
+import { ArrowRight, Clock, Lock, Users } from "lucide-react";
 import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, THINKING_KEYS } from "@/lib/attributes";
 import { QUESTIONS } from "@/lib/questions";
 
@@ -61,7 +61,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="text-sm">
+      <section className="grid gap-4 text-sm sm:grid-cols-2">
+        <div className="flex gap-3">
+          <Users className="mt-0.5 h-5 w-5 shrink-0 text-ink-muted" />
+          <p className="text-ink-soft">
+            Paste friends&rsquo; report links into{" "}
+            <Link href="/compare/" className="underline">
+              Compare
+            </Link>{" "}
+            to see team balance, missing perspectives and likely communication clashes.
+          </p>
+        </div>
         <div className="flex gap-3">
           <Lock className="mt-0.5 h-5 w-5 shrink-0 text-ink-muted" />
           <p className="text-ink-soft">

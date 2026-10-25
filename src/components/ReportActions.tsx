@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Check, IdCard, Link2, Printer, Share2 } from "lucide-react";
+import { Check, IdCard, Link2, Printer, Share2, Users } from "lucide-react";
 
 export function ReportActions({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
@@ -44,6 +44,9 @@ export function ReportActions({ code }: { code: string }) {
       )}
       <Link className="btn-ghost" href={`/card/#${code}`}>
         <IdCard className="h-4 w-4" /> How to work with me
+      </Link>
+      <Link className="btn-ghost" href={`/compare/#${code}`}>
+        <Users className="h-4 w-4" /> Compare with others
       </Link>
       <button className="btn-ghost" onClick={() => window.print()}>
         <Printer className="h-4 w-4" /> Save PDF
