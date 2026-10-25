@@ -139,3 +139,7 @@ docs/               # field guide and training graphics
 ## Credits
 
 The model and terminology come from Emergenetics® (Browning & Williams). Emergenetics® is a registered trademark of Emergenetics International, which has no affiliation with this project. The graphics are original illustrations. Profile mottos and population shares are as presented in the "Teaming Up! With Emergenetics" workshop.
+
+## License
+
+[MIT](LICENSE) © 2026 Kelvin Tan. The license covers this project's code and original illustrations. It does not grant any rights to the Emergenetics® name or trademark.
