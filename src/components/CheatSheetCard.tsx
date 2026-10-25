@@ -7,6 +7,7 @@ import { toPng } from "html-to-image";
 import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, type BehaviorKey, type ThinkingKey } from "@/lib/attributes";
 import type { CheatSheet } from "@/lib/insights";
 import { ThinkingMixBar } from "./ThinkingMixBar";
+import { PrintLink } from "./PrintLink";
 
 interface Props {
   code: string;
@@ -108,6 +109,7 @@ export function CheatSheetCard({ code, name, title, percentages, preferences, be
           </div>
         </div>
       </div>
+      <PrintLink what="card" />
     </div>
   );
 }

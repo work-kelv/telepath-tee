@@ -6,6 +6,7 @@ import { ThinkingPie } from "@/components/ThinkingPie";
 import { PercentileBars } from "@/components/PercentileBars";
 import { BehaviorSpectrum } from "@/components/BehaviorSpectrum";
 import { ReportActions } from "@/components/ReportActions";
+import { PrintLink } from "@/components/PrintLink";
 
 /** The full personal report for a profile decoded from its link. */
 export function ReportView({ profile, code }: { profile: Profile; code: string }) {
@@ -179,6 +180,8 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
           ))}
         </ul>
       </section>
+
+      <PrintLink />
     </article>
   );
 }
