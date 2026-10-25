@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { codeFromLink, decodeGroup, decodeProfile, encodeGroup, encodeProfile } from "./share";
+import { codeFromLink, codesFromText, decodeGroup, decodeProfile, encodeGroup, encodeProfile } from "./share";
 import { QUESTIONS } from "./questions";
 import { score } from "./scoring";
 
@@ -50,4 +50,16 @@ test("compare links keep valid profiles in order and drop broken or repeated one
   const b = encodeProfile("B", answers);
   assert.deepEqual(decodeGroup(`#${encodeGroup([a, "bad", b, a])}`), [a, b]);
   assert.deepEqual(decodeGroup(""), []);
+});
+
+test("pasted text: several links, bare codes, and links broken across lines by a PDF", () => {
+  const a = encodeProfile("A", answers);
+  const b = encodeProfile("B", answers);
+  const url = (c: string) => `https://example.github.io/telepath-tee/report/#${c}`;
+  assert.deepEqual(codesFromText(`${url(a)}\n${url(b)}`), [a, b]);
+  assert.deepEqual(codesFromText(`${a} ${b}`), [a, b]);
+  const wrapped = url(a).slice(0, 70) + "\n" + url(a).slice(70);
+  assert.deepEqual(codesFromText(wrapped), [a]);
+  assert.deepEqual(codesFromText(`${wrapped}\n${url(b).slice(0, 60)} ${url(b).slice(60)}`), [a, b]);
+  assert.deepEqual(codesFromText("nothing useful here"), []);
 });

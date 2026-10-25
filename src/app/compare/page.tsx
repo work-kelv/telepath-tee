@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Check, CheckCircle2, Handshake, Link2, Plus, Share2, Users, X, Zap } from "lucide-react";
 import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, THINKING_KEYS } from "@/lib/attributes";
 import { profileTitle, spectrumLabel } from "@/lib/insights";
-import { codeFromLink, decodeGroup, decodeProfile, encodeGroup } from "@/lib/share";
+import { codesFromText, decodeGroup, decodeProfile, encodeGroup } from "@/lib/share";
 import { analyzeTeam } from "@/lib/team";
 import { useHash } from "@/lib/useHash";
 import { ThinkingMixBar } from "@/components/ThinkingMixBar";
@@ -36,10 +36,7 @@ export default function ComparePage() {
 
   function add(e: React.FormEvent) {
     e.preventDefault();
-    const found = input
-      .split(/\s+/)
-      .map(codeFromLink)
-      .filter((c): c is string => Boolean(c));
+    const found = codesFromText(input);
     if (!found.length) {
       setError("That doesn't look like a complete report link. Paste the whole link, including the part after #.");
       return;

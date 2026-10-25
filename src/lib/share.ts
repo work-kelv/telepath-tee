@@ -69,3 +69,18 @@ export function decodeGroup(fragment: string): string[] {
   const codes = fragment.replace(/^#/, "").split("~").filter((c) => decodeProfile(c));
   return [...new Set(codes)];
 }
+
+/**
+ * Finds every profile code in pasted text: one or more links or bare codes. Links copied from a
+ * PDF are often broken across lines, so whitespace inside a link is ignored.
+ */
+export function codesFromText(text: string): string[] {
+  const byWhitespace = text.split(/\s+/).filter(Boolean);
+  const direct = byWhitespace.map(codeFromLink);
+  if (byWhitespace.length && direct.every(Boolean)) return direct as string[];
+  return text
+    .replace(/\s+/g, "")
+    .split(/(?=https?:\/\/)/)
+    .map(codeFromLink)
+    .filter((c): c is string => Boolean(c));
+}

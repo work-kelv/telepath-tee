@@ -15,7 +15,8 @@ export function PrintLink({ what = "report" }: { what?: string }) {
       <h2 className="text-sm font-semibold">Link to this {what}</h2>
       <p className="break-all font-mono text-xs leading-relaxed">{href}</p>
       <p className="text-xs text-ink-muted">
-        Copy this link, not the one in the page footer: the footer version is shortened and won&rsquo;t open.
+        This is the only copy of the link, so keep it. Copy it from here: the address in the page footer is often
+        shortened and may not open.
       </p>
     </section>
   );

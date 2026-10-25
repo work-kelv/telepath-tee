@@ -27,8 +27,9 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
   return (
     <article className="space-y-6">
       <div className="no-print rounded-xl border border-structural/30 bg-structural/5 p-3 text-sm">
-        Nothing about this report is saved anywhere. Its link is the only copy, so bookmark it or use{" "}
-        <b>Copy link</b> to keep it.
+        Nothing about this report is saved anywhere. Its link is the only copy, so bookmark it or use <b>Copy link</b>{" "}
+        (or <b>Share link</b>) to keep it. A saved PDF prints the full link at the top; don&rsquo;t copy the shortened
+        address from the PDF&rsquo;s footer.
       </div>
 
       <header className="space-y-4">
@@ -42,6 +43,8 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
         <p className="max-w-3xl text-ink-soft">{r.headline}</p>
         <ReportActions code={code} />
       </header>
+
+      <PrintLink />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="card">
@@ -181,7 +184,6 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
         </ul>
       </section>
 
-      <PrintLink />
     </article>
   );
 }
