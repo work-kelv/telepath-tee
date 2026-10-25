@@ -47,7 +47,7 @@ Measured separately from thinking, each as a 0–100 percentile split into third
 
 ## Quick start
 
-Requires Node 20+.
+Requires Node 20 or newer (CI and hosting use Node 22 LTS).
 
 ```bash
 npm install
