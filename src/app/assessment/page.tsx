@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Loader2, Send } from "lucide-react";
 import { LikertScale } from "@/components/LikertScale";
 import { buildSteps, QUESTIONS } from "@/lib/questions";
@@ -30,7 +29,6 @@ function readDraft(): Draft {
 }
 
 export default function AssessmentPage() {
-  const router = useRouter();
   const steps = useMemo(buildSteps, []);
   const totalSteps = steps.length + 1; // step 0 is "about you"
   const [draft, setDraft] = useState<Draft>(EMPTY);
@@ -94,7 +92,9 @@ export default function AssessmentPage() {
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {}
-    router.push(`/report/#${code}`);
+    // A full page load rather than client-side routing: it only needs the static report page,
+    // so it also works where in-app routing can fail (some iOS browsers, content blockers).
+    window.location.assign(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/report/#${code}`);
   }
 
   if (!loaded) return <div className="h-64" />;
