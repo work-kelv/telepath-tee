@@ -8,6 +8,8 @@ import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, type BehaviorKey, type ThinkingKey }
 import type { CheatSheet } from "@/lib/insights";
 import { ThinkingMixBar } from "./ThinkingMixBar";
 import { PrintLink } from "./PrintLink";
+import { AnimalBadge } from "./AnimalCard";
+import { animalFor } from "@/lib/animals";
 
 interface Props {
   code: string;
@@ -82,6 +84,9 @@ export function CheatSheetCard({ code, name, title, percentages, preferences, be
             <p className="eyebrow">How to work with</p>
             <h1 className="text-2xl font-bold">{name}</h1>
             <p className="text-sm text-ink-soft">{title} thinker</p>
+            <div className="mt-2">
+              <AnimalBadge animal={animalFor(preferences)} size={52} />
+            </div>
           </div>
           <ThinkingMixBar percentages={percentages} height={24} />
           <div className="flex flex-wrap gap-1.5">

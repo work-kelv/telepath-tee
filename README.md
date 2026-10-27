@@ -10,6 +10,12 @@ It is inspired by the Emergenetics® model of four thinking attributes and three
 
 ![There's a committee in your head](docs/images/01-committee.png)
 
+## Which animal are you?
+
+Every mix of thinking preferences has its own animal, motto and share of the population: 15 in all, from the Clipboard Detective Raccoon (Analytical) to the Wise Forest Owl (all four colors). Your report shows yours, and the **Animals** page shows them all.
+
+![The 15 profile animals](docs/images/09-animal-gallery.jpg)
+
 ## Nothing is stored
 
 The app asks for a name and nothing else, and it keeps nothing.
@@ -50,6 +56,7 @@ Measured separately from thinking, each as a 0–100 percentile split into third
 ## Features
 
 - **Questionnaire.** 56 statements on a 1–7 agree scale, in 8 short steps. It shows progress, checks each step before moving on, and is built for phones first.
+- **Profile animal.** Each report opens with the person's animal: illustration, description, motto and how common the profile is. The Animals page shows all 15 and highlights yours when you arrive from a report.
 - **Personal report.** Shows the thinking-mix donut, percentile bars and behavior spectrums, plus a written summary, communication tips, ideal environment, interaction strategies and how others can flex toward you. **Save PDF** uses print-specific styles.
 - **"How to work with me" card.** On phones, **Save as image** opens the share sheet (Save Image, Messages, WhatsApp and so on). On computers, it downloads a PNG.
 - **Share link.** On phones this opens the share sheet; on computers it copies the link.
@@ -70,7 +77,7 @@ npm run dev        # http://localhost:3000
 | `npm run dev` | Development server, also reachable from a phone on the same Wi-Fi |
 | `npm run build` | Builds the static site into `out/` |
 | `npm run preview` | Serves `out/` on port 4173 and prints a link for your phone |
-| `npm test` | Unit tests for the scoring engine, report links and group analysis |
+| `npm test` | Unit tests for the scoring engine, report links, group analysis and animals |
 | `npm run typecheck` | TypeScript check |
 
 > **On exFAT or other drives without symlinks**, install with `npm install --no-bin-links`. The npm scripts call `node node_modules/...` directly, so they work either way.
@@ -92,6 +99,7 @@ Because the result is plain static files, any static host works too, such as Net
 | `/report/#<code>` | Personal report |
 | `/card/#<code>` | "How to work with me" card |
 | `/compare/#<code>~<code>~…` | Group comparison of up to 12 people |
+| `/animals/` | All 15 profile animals (add `#<code>` to highlight one person's) |
 
 A code looks like `1.<56 digits>.<name>`: a format version, one digit per answer, and the name in URL-safe Base64. See `src/lib/share.ts`.
 
@@ -126,9 +134,11 @@ src/
     insights.ts     # report narrative, interaction strategies, cheat sheet
     share.ts        # packs a profile into a link and back (+ share.test.ts)
     team.ts         # group averages, coverage, clashes, allies (+ team.test.ts)
+    animals.ts      # the 15 profile animals (+ animals.test.ts)
   app/              # Next.js App Router pages, exported as static files
   components/       # charts, form, report, card, dot chart
 scripts/            # preview server and reconstruct tool
+public/animals/     # the 15 animal illustrations
 docs/               # field guide and training graphics
 ```
 

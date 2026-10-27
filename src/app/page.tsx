@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, Lock, Users } from "lucide-react";
 import { BEHAVIOR, BEHAVIOR_KEYS, THINKING, THINKING_KEYS } from "@/lib/attributes";
 import { QUESTIONS } from "@/lib/questions";
+import { ANIMALS, animalImage } from "@/lib/animals";
 
 export default function Home() {
   return (
@@ -59,6 +60,35 @@ export default function Home() {
             Behaviors are measured separately from thinking: knowing one doesn&rsquo;t predict the other.
           </p>
         </div>
+      </section>
+
+      <section className="card space-y-3">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="font-semibold">Which animal are you?</h2>
+          <Link href="/animals/" className="text-sm font-medium underline">
+            Meet all 15
+          </Link>
+        </div>
+        <p className="text-sm text-ink-soft">
+          Each mix of thinking preferences has its own animal, from the Clipboard Detective Raccoon to the Wise Forest Owl.
+          Your report tells you which one is yours.
+        </p>
+        <ul className="flex flex-wrap gap-2" aria-label="The 15 profile animals">
+          {ANIMALS.map((a) => (
+            <li key={a.name}>
+              <img
+                src={animalImage(a)}
+                alt={a.name}
+                title={a.name}
+                width={52}
+                height={52}
+                loading="lazy"
+                className="h-[52px] w-[52px] rounded-full border border-line object-cover"
+                style={{ objectPosition: "50% 40%" }}
+              />
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="grid gap-4 text-sm sm:grid-cols-2">

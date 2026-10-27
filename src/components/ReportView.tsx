@@ -7,6 +7,8 @@ import { PercentileBars } from "@/components/PercentileBars";
 import { BehaviorSpectrum } from "@/components/BehaviorSpectrum";
 import { ReportActions } from "@/components/ReportActions";
 import { PrintLink } from "@/components/PrintLink";
+import { AnimalCard } from "@/components/AnimalCard";
+import { animalFor } from "@/lib/animals";
 
 /** The full personal report for a profile decoded from its link. */
 export function ReportView({ profile, code }: { profile: Profile; code: string }) {
@@ -45,6 +47,8 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
       </header>
 
       <PrintLink />
+
+      <AnimalCard animal={animalFor(s.preferences)} code={code} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="card">

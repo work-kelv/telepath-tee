@@ -9,6 +9,8 @@ import { codesFromText, decodeGroup, decodeProfile, encodeGroup } from "@/lib/sh
 import { analyzeTeam } from "@/lib/team";
 import { useHash } from "@/lib/useHash";
 import { ThinkingMixBar } from "@/components/ThinkingMixBar";
+import { AnimalBadge } from "@/components/AnimalCard";
+import { animalFor } from "@/lib/animals";
 import { DotChart } from "@/components/DotChart";
 import { PrintButton } from "@/components/PrintButton";
 
@@ -178,6 +180,9 @@ export default function ComparePage() {
                     <p className="text-xs text-ink-muted">
                       {profileTitle(m.scores)} &middot; {m.scores.modality}
                     </p>
+                    <div className="mt-1">
+                      <AnimalBadge animal={animalFor(m.scores.preferences)} size={36} />
+                    </div>
                   </div>
                   <div className="space-y-1.5">
                     <ThinkingMixBar percentages={m.scores.percentages} />

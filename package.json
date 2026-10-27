@@ -8,7 +8,7 @@
     "dev": "node node_modules/next/dist/bin/next dev -H 0.0.0.0 -p 3000",
     "build": "node node_modules/next/dist/bin/next build",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test": "node node_modules/tsx/dist/cli.mjs --test src/lib/scoring.test.ts src/lib/share.test.ts src/lib/team.test.ts",
+    "test": "node node_modules/tsx/dist/cli.mjs --test src/lib/scoring.test.ts src/lib/share.test.ts src/lib/team.test.ts src/lib/animals.test.ts",
     "reconstruct": "node node_modules/tsx/dist/cli.mjs scripts/reconstruct-profile.ts",
     "preview": "node scripts/preview.mjs"
   },
