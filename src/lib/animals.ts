@@ -2,13 +2,14 @@ import { THINKING_KEYS, type ThinkingKey } from "./attributes";
 
 // One animal for each combination of thinking preferences (15 in all: every set of one to
 // four colors). Mottos and population shares are as presented in the "Teaming Up! With
-// Emergenetics" workshop; the animals and their descriptions are this project's own.
+// Emergenetics" workshop; the animals and summaries are this project's own.
 
 export interface Animal {
   /** Thinking preferences, in the standard Analytical/Structural/Social/Conceptual order. */
   colors: ThinkingKey[];
   name: string;
-  description: string;
+  /** What this mix of thinking preferences is like, in a sentence or two. */
+  summary: string;
   motto: string;
   /** Share of people with this profile, in percent. */
   rarity: number;
@@ -19,8 +20,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical"],
     name: "The Clipboard Detective Raccoon",
-    description:
-      "A sharp-eyed raccoon in round spectacles, carrying an oversized pocket calculator and cross-examining every clue with a magnifying glass.",
+    summary: "Logic first. Thinks things through with data and reasoning, enjoys untangling complex problems, and wants evidence before agreeing.",
     motto: "In God we trust… all others must bring data.",
     rarity: 1,
     image: "raccoon.jpg",
@@ -28,8 +28,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["structural"],
     name: "The Punctual Penguin",
-    description:
-      "An ultra-organized penguin in a tiny bowtie and hard hat, carrying color-coded checklists and arranging ice blocks in perfect, symmetrical rows.",
+    summary: "Plan first. Likes clear steps, rules and predictability, pays close attention to detail, and finishes what it starts.",
     motto: "Of course I don’t look busy, I did it right the first time.",
     rarity: 6,
     image: "penguin.jpg",
@@ -37,8 +36,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["social"],
     name: "The Golden Retriever Puppy",
-    description:
-      "An energetic puppy with a bright heart on its shirt, making friends with every bird, bug and stranger it passes on the street.",
+    summary: "People first. Reads how others feel, thinks best in conversation, and weighs every decision by its effect on people.",
     motto: "I wear my heart on my sleeve.",
     rarity: 1,
     image: "puppy.jpg",
@@ -46,8 +44,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["conceptual"],
     name: "The Daydreaming Chameleon",
-    description:
-      "A color-shifting lizard staring at the stars, doodling wild sci-fi landscapes on sticky notes instead of looking where it’s walking.",
+    summary: "Ideas first. Imaginative and intuitive, sees the big picture, loves the unusual, and learns by experimenting.",
     motto: "I feel like I’m diagonally parked in a parallel universe.",
     rarity: 2,
     image: "chameleon.jpg",
@@ -55,8 +52,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "structural"],
     name: "The Master Architect Ant",
-    description:
-      "A tiny ant in a high-vis vest holding blueprint scrolls, carefully calculating load distribution before moving a single leaf.",
+    summary: "Logical and organized. Gathers the facts, builds a careful plan, then follows it through to the end.",
     motto: "Make a plan and follow it.",
     rarity: 15,
     image: "ant.jpg",
@@ -64,8 +60,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["structural", "social"],
     name: "The Camp Leader Squirrel",
-    description:
-      "A friendly squirrel who plans fun group games, but insists everyone lines up in alphabetical order and signs up for a time slot in advance.",
+    summary: "Practical and caring. Brings order to people\u2019s needs: reliable plans, clear roles and a well-looked-after team.",
     motto: "I’d love to share the experience with you, but please make an appointment first.",
     rarity: 14,
     image: "squirrel.jpg",
@@ -73,8 +68,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "conceptual"],
     name: "The Astronomer Star-Fox",
-    description:
-      "A clever fox at a huge telescope, working through cosmic equations while dreaming up theories about deep-space galaxy maps.",
+    summary: "Big-picture strategist. Pairs rigorous analysis with imagination, seeing both the data and where it could lead.",
     motto: "I see the forest.",
     rarity: 13,
     image: "fox.jpg",
@@ -82,8 +76,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["social", "conceptual"],
     name: "The Community Mural Capybara",
-    description:
-      "A chill, artistic capybara who gathers the neighborhood’s forest animals to paint a giant mural together, encouraging everyone to add their own ideas.",
+    summary: "Creative and collaborative. Dreams up new possibilities with and for people, and builds ideas together.",
     motto: "Let’s create this together.",
     rarity: 12,
     image: "capybara.jpg",
@@ -91,8 +84,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["structural", "conceptual"],
     name: "The Origami Master Crane",
-    description:
-      "A bird that turns flat, wild ideas into intricate 3D paper structures, one precise step-by-step fold at a time.",
+    summary: "Visionary builder. Has the wild ideas and the patience to turn them into step-by-step reality, a rare mix of new and proven.",
     motto: "Nailing jelly to the wall.",
     rarity: 4,
     image: "crane.jpg",
@@ -100,8 +92,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "social"],
     name: "The Advice-Giver Dolphin",
-    description:
-      "An empathetic sea creature who uses sonar data to help schoolmates navigate underwater currents, with plenty of comforting encouragement along the way.",
+    summary: "Head and heart. Checks both the evidence and the human impact, combining clear reasoning with empathy.",
     motto: "An informed head with a warm heart.",
     rarity: 3,
     image: "dolphin.jpg",
@@ -109,8 +100,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "social", "conceptual"],
     name: "The Eco-Explorer Octopus",
-    description:
-      "A versatile octopus holding a map, a test tube and a megaphone, gathering data to pitch big, friendly ocean-cleanup ideas to marine life.",
+    summary: "Global thinker. Combines analysis, a feel for people and big ideas; at home with strategy and change, lighter on routine.",
     motto: "What do you think of this global idea?",
     rarity: 12,
     image: "octopus.jpg",
@@ -118,8 +108,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "structural", "social"],
     name: "The School Headmaster Badger",
-    description:
-      "An organized badger who manages school budgets and schedules down to the cent, but always leaves the office door open to comfort a stressed student.",
+    summary: "Efficient with feeling. Logical, organized and attentive to people: gets things done without leaving anyone behind.",
     motto: "Efficiency with feeling.",
     rarity: 7,
     image: "badger.jpg",
@@ -127,8 +116,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "structural", "conceptual"],
     name: "The Rocket Engineer Beaver",
-    description:
-      "A beaver who drafts wild spaceship blueprints, runs the fuel calculations, and builds the launchpad step by step.",
+    summary: "Inventive doer. Turns ideas into results with logic and planning; the people side may need a deliberate thought.",
     motto: "Ideas are for doing.",
     rarity: 5,
     image: "beaver.jpg",
@@ -136,8 +124,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["structural", "social", "conceptual"],
     name: "The Circus Ringmaster Lion",
-    description:
-      "A charismatic leader who designs magical creative acts, schedules the rehearsal timetable, and keeps every performer happy and in step.",
+    summary: "Creative organizer. Imaginative and people-minded, with the structure to bring ideas to life.",
     motto: "Creative thinking with controlled emotions.",
     rarity: 5,
     image: "lion.jpg",
@@ -145,8 +132,7 @@ export const ANIMALS: Animal[] = [
   {
     colors: ["analytical", "structural", "social", "conceptual"],
     name: "The Wise Forest Owl",
-    description:
-      "A gentle, many-talented owl in a four-color sash who solves puzzles with logic, sets clear forest rules, listens with deep empathy and inspires everyone with big dreams.",
+    summary: "Fair and balanced. Relates to every way of thinking and sees a problem from all angles, though picking one path can take time.",
     motto: "Fair and balanced.",
     rarity: 1,
     image: "owl.jpg",

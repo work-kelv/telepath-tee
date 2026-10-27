@@ -1,22 +1,9 @@
 import Link from "next/link";
-import { THINKING, type ThinkingKey } from "@/lib/attributes";
 import { animalImage, type Animal } from "@/lib/animals";
+import { ModelCircle } from "./ModelCircle";
 
 /** Largest share of any profile, used as the full width of every rarity bar so they compare. */
 export const RARITY_SCALE = 15;
-
-export function ColorChips({ colors }: { colors: ThinkingKey[] }) {
-  return (
-    <span className="flex flex-wrap gap-1.5">
-      {colors.map((k) => (
-        <span key={k} className="inline-flex items-center gap-1 rounded-full bg-surface-sunken px-2 py-0.5 text-xs font-medium">
-          <span className="h-2 w-2 rounded-full" style={{ background: THINKING[k].color }} aria-hidden />
-          {THINKING[k].name}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 export function RarityBar({ rarity }: { rarity: number }) {
   return (
@@ -34,22 +21,18 @@ export function RarityBar({ rarity }: { rarity: number }) {
 /** The "Your animal" section of a report. */
 export function AnimalCard({ animal, code }: { animal: Animal; code: string }) {
   return (
-    <section className="card grid items-center gap-5 sm:grid-cols-[minmax(0,240px)_1fr]">
-      <img
-        src={animalImage(animal)}
-        alt={`${animal.name}: ${animal.description}`}
-        width={640}
-        height={480}
-        className="mx-auto w-full max-w-[280px] rounded-xl"
-      />
+    <section className="card grid items-center gap-5 sm:grid-cols-[minmax(0,260px)_1fr]">
+      <img src={animalImage(animal)} alt={animal.name} width={640} height={480} className="mx-auto w-full max-w-[300px] rounded-xl" />
       <div className="min-w-0 space-y-3">
-        <div className="space-y-1.5">
-          <p className="eyebrow">Your profile animal</p>
-          <h2 className="text-xl font-bold leading-tight">{animal.name}</h2>
-          <ColorChips colors={animal.colors} />
+        <div className="flex items-center gap-4">
+          <ModelCircle colors={animal.colors} size={136} />
+          <div className="min-w-0 space-y-1">
+            <p className="eyebrow">Your profile animal</p>
+            <h2 className="text-xl font-bold leading-tight">{animal.name}</h2>
+            <p className="text-base font-medium italic">&ldquo;{animal.motto}&rdquo;</p>
+          </div>
         </div>
-        <p className="text-sm text-ink-soft">{animal.description}</p>
-        <blockquote className="border-l-4 border-line pl-3 text-base font-medium italic">&ldquo;{animal.motto}&rdquo;</blockquote>
+        <p className="text-sm text-ink-soft">{animal.summary}</p>
         <RarityBar rarity={animal.rarity} />
         <Link href={`/animals/#${code}`} className="no-print inline-block text-sm font-medium underline">
           Meet all 15 animals
