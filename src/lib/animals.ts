@@ -7,6 +7,8 @@ import { THINKING_KEYS, type ThinkingKey } from "./attributes";
 export interface Animal {
   /** Thinking preferences, in the standard Analytical/Structural/Social/Conceptual order. */
   colors: ThinkingKey[];
+  /** A typical thinking mix for this profile (percentages adding to 100), as drawn in its pie. */
+  typical: Record<ThinkingKey, number>;
   name: string;
   /** What this mix of thinking preferences is like, in a sentence or two. */
   summary: string;
@@ -19,6 +21,7 @@ export interface Animal {
 export const ANIMALS: Animal[] = [
   {
     colors: ["analytical"],
+    typical: { analytical: 64, structural: 12, social: 12, conceptual: 12 },
     name: "The Clipboard Detective Raccoon",
     summary: "Logic first. Thinks things through with data and reasoning, enjoys untangling complex problems, and wants evidence before agreeing.",
     motto: "In God we trust… all others must bring data.",
@@ -27,6 +30,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["structural"],
+    typical: { analytical: 12, structural: 64, social: 12, conceptual: 12 },
     name: "The Punctual Penguin",
     summary: "Plan first. Likes clear steps, rules and predictability, pays close attention to detail, and finishes what it starts.",
     motto: "Of course I don’t look busy, I did it right the first time.",
@@ -35,6 +39,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["social"],
+    typical: { analytical: 12, structural: 12, social: 64, conceptual: 12 },
     name: "The Golden Retriever Puppy",
     summary: "People first. Reads how others feel, thinks best in conversation, and weighs every decision by its effect on people.",
     motto: "I wear my heart on my sleeve.",
@@ -43,6 +48,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["conceptual"],
+    typical: { analytical: 12, structural: 12, social: 12, conceptual: 64 },
     name: "The Daydreaming Chameleon",
     summary: "Ideas first. Imaginative and intuitive, sees the big picture, loves the unusual, and learns by experimenting.",
     motto: "I feel like I’m diagonally parked in a parallel universe.",
@@ -51,6 +57,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "structural"],
+    typical: { analytical: 42, structural: 40, social: 9, conceptual: 9 },
     name: "The Master Architect Ant",
     summary: "Logical and organized. Gathers the facts, builds a careful plan, then follows it through to the end.",
     motto: "Make a plan and follow it.",
@@ -59,6 +66,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["structural", "social"],
+    typical: { analytical: 8, structural: 44, social: 40, conceptual: 8 },
     name: "The Camp Leader Squirrel",
     summary: "Practical and caring. Brings order to people\u2019s needs: reliable plans, clear roles and a well-looked-after team.",
     motto: "I’d love to share the experience with you, but please make an appointment first.",
@@ -67,6 +75,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "conceptual"],
+    typical: { analytical: 44, structural: 8, social: 8, conceptual: 40 },
     name: "The Astronomer Star-Fox",
     summary: "Big-picture strategist. Pairs rigorous analysis with imagination, seeing both the data and where it could lead.",
     motto: "I see the forest.",
@@ -75,6 +84,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["social", "conceptual"],
+    typical: { analytical: 7, structural: 7, social: 42, conceptual: 44 },
     name: "The Community Mural Capybara",
     summary: "Creative and collaborative. Dreams up new possibilities with and for people, and builds ideas together.",
     motto: "Let’s create this together.",
@@ -83,6 +93,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["structural", "conceptual"],
+    typical: { analytical: 10, structural: 40, social: 10, conceptual: 40 },
     name: "The Origami Master Crane",
     summary: "Visionary builder. Has the wild ideas and the patience to turn them into step-by-step reality, a rare mix of new and proven.",
     motto: "Nailing jelly to the wall.",
@@ -91,6 +102,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "social"],
+    typical: { analytical: 42, structural: 10, social: 38, conceptual: 10 },
     name: "The Advice-Giver Dolphin",
     summary: "Head and heart. Checks both the evidence and the human impact, combining clear reasoning with empathy.",
     motto: "An informed head with a warm heart.",
@@ -99,6 +111,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "social", "conceptual"],
+    typical: { analytical: 32, structural: 8, social: 30, conceptual: 30 },
     name: "The Eco-Explorer Octopus",
     summary: "Global thinker. Combines analysis, a feel for people and big ideas; at home with strategy and change, lighter on routine.",
     motto: "What do you think of this global idea?",
@@ -107,6 +120,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "structural", "social"],
+    typical: { analytical: 30, structural: 32, social: 30, conceptual: 8 },
     name: "The School Headmaster Badger",
     summary: "Efficient with feeling. Logical, organized and attentive to people: gets things done without leaving anyone behind.",
     motto: "Efficiency with feeling.",
@@ -115,6 +129,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "structural", "conceptual"],
+    typical: { analytical: 32, structural: 30, social: 8, conceptual: 30 },
     name: "The Rocket Engineer Beaver",
     summary: "Inventive doer. Turns ideas into results with logic and planning; the people side may need a deliberate thought.",
     motto: "Ideas are for doing.",
@@ -123,6 +138,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["structural", "social", "conceptual"],
+    typical: { analytical: 8, structural: 30, social: 32, conceptual: 30 },
     name: "The Circus Ringmaster Lion",
     summary: "Creative organizer. Imaginative and people-minded, with the structure to bring ideas to life.",
     motto: "Creative thinking with controlled emotions.",
@@ -131,6 +147,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     colors: ["analytical", "structural", "social", "conceptual"],
+    typical: { analytical: 25, structural: 25, social: 25, conceptual: 25 },
     name: "The Wise Forest Owl",
     summary: "Fair and balanced. Relates to every way of thinking and sees a problem from all angles, though picking one path can take time.",
     motto: "Fair and balanced.",

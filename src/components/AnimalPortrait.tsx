@@ -66,12 +66,13 @@ export function AnimalPortrait({
         </clipPath>
       </defs>
       <circle cx={c} cy={c} r={ringR - ring / 2 - 3} fill="#fbeedb" />
+      {/* Scaled so the whole character fits inside the circle (the image is 4:3, centred on 100,100). */}
       <image
         href={animalImage(animal)}
-        x={-42}
-        y={-6}
-        width={284}
-        height={213}
+        x={-8}
+        y={19}
+        width={216}
+        height={162}
         preserveAspectRatio="xMidYMid slice"
         clipPath={`url(#${clipId})`}
       />

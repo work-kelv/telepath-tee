@@ -19,8 +19,8 @@ export default function AnimalsPage() {
         <p className="eyebrow">Profile animals</p>
         <h1 className="text-3xl font-bold tracking-tight">Meet the 15 animals</h1>
         <p className="max-w-2xl text-ink-soft">
-          Every profile has a mix of thinking preferences: any color at 23% or more. In each circle, the colored quadrants
-          are that animal&rsquo;s preferences. Each of the 15 possible mixes has its own animal, motto and share of the
+          Every profile has a mix of thinking preferences: any color at 23% or more. Each pie shows a typical mix for that
+          animal, with its preferences as the big, labeled slices. Each of the 15 possible mixes has its own animal, motto and share of the
           population; the bars use one scale, where a full bar is {RARITY_SCALE}% of people.
         </p>
         <p className="no-print text-sm">
@@ -60,7 +60,7 @@ export default function AnimalsPage() {
                 {isMine ? `${profile?.name}’s animal` : ANIMAL_GROUPS.find((g) => g.size === a.colors.length)?.title}
               </p>
               <div className="flex items-center gap-3">
-                <ModelCircle colors={a.colors} size={128} />
+                <ModelCircle mix={a.typical} size={128} />
                 <div className="min-w-0 space-y-1">
                   <h3 className="font-bold leading-tight">{a.name}</h3>
                   <p className="text-sm font-medium italic">&ldquo;{a.motto}&rdquo;</p>

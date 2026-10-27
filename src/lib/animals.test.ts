@@ -33,3 +33,11 @@ test("every scored profile gets an animal, and every picture exists", () => {
   }
   for (const a of ANIMALS) assert.ok(existsSync(path.join("public", "animals", a.image)), a.image);
 });
+
+test("each typical mix adds to 100% and its preferred colors are exactly the slices of 23% or more", () => {
+  for (const a of ANIMALS) {
+    const t = a.typical;
+    assert.equal(THINKING_KEYS.reduce((s, k) => s + t[k], 0), 100, a.name);
+    assert.deepEqual(THINKING_KEYS.filter((k) => t[k] >= 23), THINKING_KEYS.filter((k) => a.colors.includes(k)), a.name);
+  }
+});
