@@ -48,7 +48,7 @@ export function ReportView({ profile, code }: { profile: Profile; code: string }
 
       <PrintLink />
 
-      <AnimalCard animal={animalFor(s.preferences)} code={code} />
+      <AnimalCard animal={animalFor(s.preferences)} code={code} percentages={s.percentages} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="card">

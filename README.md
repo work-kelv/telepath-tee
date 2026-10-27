@@ -14,6 +14,10 @@ It is inspired by the Emergenetics® model of four thinking attributes and three
 
 Every mix of thinking preferences has its own animal, motto and share of the population: 15 in all, from the Clipboard Detective Raccoon (Analytical) to the Wise Forest Owl (all four colors). Your report shows yours, and the **Animals** page shows them all.
 
+![The character collection: all 15 animals with their colors, motto and rarity](docs/images/10-character-collection.jpg)
+
+The full gallery, with a short description of each mix:
+
 ![The 15 profile animals](docs/images/09-animal-gallery.jpg)
 
 ## Nothing is stored
@@ -100,6 +104,7 @@ Because the result is plain static files, any static host works too, such as Net
 | `/card/#<code>` | "How to work with me" card |
 | `/compare/#<code>~<code>~…` | Group comparison of up to 12 people |
 | `/animals/` | All 15 profile animals (add `#<code>` to highlight one person's) |
+| `/animals/collection/` | All 15 on one shareable card |
 
 A code looks like `1.<56 digits>.<name>`: a format version, one digit per answer, and the name in URL-safe Base64. See `src/lib/share.ts`.
 

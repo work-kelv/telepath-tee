@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { THINKING, THINKING_KEYS, type ThinkingKey } from "@/lib/attributes";
 import { animalImage, type Animal } from "@/lib/animals";
-import { ModelCircle } from "./ModelCircle";
+import { AnimalPortrait } from "./AnimalPortrait";
 
 /** Largest share of any profile, used as the full width of every rarity bar so they compare. */
 export const RARITY_SCALE = 15;
@@ -18,20 +19,35 @@ export function RarityBar({ rarity }: { rarity: number }) {
   );
 }
 
-/** The "Your animal" section of a report. */
-export function AnimalCard({ animal, code }: { animal: Animal; code: string }) {
+/** The "Your animal" section of a report: the animal framed by a ring of this person's thinking mix. */
+export function AnimalCard({
+  animal,
+  code,
+  percentages,
+}: {
+  animal: Animal;
+  code: string;
+  percentages: Record<ThinkingKey, number>;
+}) {
   return (
-    <section className="card grid items-center gap-5 sm:grid-cols-[minmax(0,260px)_1fr]">
-      <img src={animalImage(animal)} alt={animal.name} width={640} height={480} className="mx-auto w-full max-w-[300px] rounded-xl" />
+    <section className="card grid items-center gap-5 sm:grid-cols-[220px_1fr]">
+      <div className="mx-auto">
+        <AnimalPortrait animal={animal} percentages={percentages} size={220} />
+      </div>
       <div className="min-w-0 space-y-3">
-        <div className="flex items-center gap-4">
-          <ModelCircle colors={animal.colors} size={136} />
-          <div className="min-w-0 space-y-1">
-            <p className="eyebrow">Your profile animal</p>
-            <h2 className="text-xl font-bold leading-tight">{animal.name}</h2>
-            <p className="text-base font-medium italic">&ldquo;{animal.motto}&rdquo;</p>
-          </div>
+        <div className="space-y-1">
+          <p className="eyebrow">Your profile animal</p>
+          <h2 className="text-xl font-bold leading-tight">{animal.name}</h2>
+          <p className="text-base font-medium italic">&ldquo;{animal.motto}&rdquo;</p>
         </div>
+        <p className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-soft" aria-label="The ring shows your thinking mix">
+          {THINKING_KEYS.map((k) => (
+            <span key={k} className="inline-flex items-center gap-1 whitespace-nowrap">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: THINKING[k].color }} />
+              {THINKING[k].name} <b className="text-ink">{percentages[k]}%</b>
+            </span>
+          ))}
+        </p>
         <p className="text-sm text-ink-soft">{animal.summary}</p>
         <RarityBar rarity={animal.rarity} />
         <Link href={`/animals/#${code}`} className="no-print inline-block text-sm font-medium underline">

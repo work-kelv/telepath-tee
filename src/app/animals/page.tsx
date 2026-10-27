@@ -23,6 +23,11 @@ export default function AnimalsPage() {
           are that animal&rsquo;s preferences. Each of the 15 possible mixes has its own animal, motto and share of the
           population; the bars use one scale, where a full bar is {RARITY_SCALE}% of people.
         </p>
+        <p className="no-print text-sm">
+          <Link href="/animals/collection/" className="font-medium underline">
+            See all 15 on one card
+          </Link>
+        </p>
         {profile && mine && (
           <p className="no-print rounded-xl border border-line bg-surface-card p-3 text-sm">
             <b>{profile.name}</b> is <b>{mine.name}</b>, highlighted below.{" "}
